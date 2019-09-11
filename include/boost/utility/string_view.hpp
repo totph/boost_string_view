@@ -35,6 +35,11 @@
 
 namespace boost {
 
+    // 2 lines from string_view_fwd.hpp
+    template<typename charT, typename traits = std::char_traits<charT> > class basic_string_view;
+    typedef basic_string_view<char,     std::char_traits<char> >        string_view;
+
+
     namespace detail {
     //  A helper functor because sometimes we don't have lambdas
         template <typename charT, typename traits>
