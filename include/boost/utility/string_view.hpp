@@ -62,7 +62,7 @@ namespace boost {
       typedef const_reverse_iterator                reverse_iterator;
       typedef std::size_t                           size_type;
       typedef std::ptrdiff_t                        difference_type;
-      static BOOST_CONSTEXPR_OR_CONST size_type     npos = size_type(-1);
+      static constexpr size_type     npos = size_type(-1);
 
       // construct/copy
       BOOST_CONSTEXPR basic_string_view() BOOST_NOEXCEPT
