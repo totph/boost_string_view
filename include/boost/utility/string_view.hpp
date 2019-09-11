@@ -65,12 +65,12 @@ namespace boost {
       static constexpr size_type     npos = size_type(-1);
 
       // construct/copy
-      BOOST_CONSTEXPR basic_string_view() BOOST_NOEXCEPT
+      constexpr basic_string_view() BOOST_NOEXCEPT
         : ptr_(NULL), len_(0) {}
 
       // by defaulting these functions, basic_string_ref becomes
       //  trivially copy/move constructible.
-      BOOST_CONSTEXPR basic_string_view(const basic_string_view &rhs) BOOST_NOEXCEPT
+      constexpr basic_string_view(const basic_string_view &rhs) BOOST_NOEXCEPT
         = default;
 
       basic_string_view& operator=(const basic_string_view &rhs) BOOST_NOEXCEPT
@@ -87,38 +87,38 @@ namespace boost {
 //           = delete;
 // #endif
 
-      BOOST_CONSTEXPR basic_string_view(const charT* str)
+      constexpr basic_string_view(const charT* str)
         : ptr_(str), len_(traits::length(str)) {}
 
-      BOOST_CONSTEXPR basic_string_view(const charT* str, size_type len)
+      constexpr basic_string_view(const charT* str, size_type len)
         : ptr_(str), len_(len) {}
 
         // iterators
-        BOOST_CONSTEXPR const_iterator   begin() const BOOST_NOEXCEPT { return ptr_; }
-        BOOST_CONSTEXPR const_iterator  cbegin() const BOOST_NOEXCEPT { return ptr_; }
-        BOOST_CONSTEXPR const_iterator     end() const BOOST_NOEXCEPT { return ptr_ + len_; }
-        BOOST_CONSTEXPR const_iterator    cend() const BOOST_NOEXCEPT { return ptr_ + len_; }
+        constexpr const_iterator   begin() const BOOST_NOEXCEPT { return ptr_; }
+        constexpr const_iterator  cbegin() const BOOST_NOEXCEPT { return ptr_; }
+        constexpr const_iterator     end() const BOOST_NOEXCEPT { return ptr_ + len_; }
+        constexpr const_iterator    cend() const BOOST_NOEXCEPT { return ptr_ + len_; }
                 const_reverse_iterator  rbegin() const BOOST_NOEXCEPT { return const_reverse_iterator(end()); }
                 const_reverse_iterator crbegin() const BOOST_NOEXCEPT { return const_reverse_iterator(end()); }
                 const_reverse_iterator    rend() const BOOST_NOEXCEPT { return const_reverse_iterator(begin()); }
                 const_reverse_iterator   crend() const BOOST_NOEXCEPT { return const_reverse_iterator(begin()); }
 
         // capacity
-        BOOST_CONSTEXPR size_type size()     const BOOST_NOEXCEPT { return len_; }
-        BOOST_CONSTEXPR size_type length()   const BOOST_NOEXCEPT { return len_; }
-        BOOST_CONSTEXPR size_type max_size() const BOOST_NOEXCEPT { return len_; }
-        BOOST_CONSTEXPR bool empty()         const BOOST_NOEXCEPT { return len_ == 0; }
+        constexpr size_type size()     const BOOST_NOEXCEPT { return len_; }
+        constexpr size_type length()   const BOOST_NOEXCEPT { return len_; }
+        constexpr size_type max_size() const BOOST_NOEXCEPT { return len_; }
+        constexpr bool empty()         const BOOST_NOEXCEPT { return len_ == 0; }
 
         // element access
-        BOOST_CONSTEXPR const_reference operator[](size_type pos) const BOOST_NOEXCEPT { return ptr_[pos]; }
+        constexpr const_reference operator[](size_type pos) const BOOST_NOEXCEPT { return ptr_[pos]; }
 
-        BOOST_CONSTEXPR const_reference at(size_t pos) const {
+        constexpr const_reference at(size_t pos) const {
             return pos >= len_ ? BOOST_THROW_EXCEPTION(std::out_of_range("boost::string_view::at")), ptr_[0] : ptr_[pos];
             }
 
-        BOOST_CONSTEXPR const_reference front() const                { return ptr_[0]; }
-        BOOST_CONSTEXPR const_reference back()  const                { return ptr_[len_-1]; }
-        BOOST_CONSTEXPR const_pointer data()    const BOOST_NOEXCEPT { return ptr_; }
+        constexpr const_reference front() const                { return ptr_[0]; }
+        constexpr const_reference back()  const                { return ptr_[len_-1]; }
+        constexpr const_pointer data()    const BOOST_NOEXCEPT { return ptr_; }
 
         // modifiers
         void clear() BOOST_NOEXCEPT { len_ = 0; }          // Boost extension
@@ -195,19 +195,19 @@ namespace boost {
             }
 
         //  Searches
-        BOOST_CONSTEXPR bool starts_with(charT c) const BOOST_NOEXCEPT {              // Boost extension
+        constexpr bool starts_with(charT c) const BOOST_NOEXCEPT {              // Boost extension
             return !empty() && traits::eq(c, front());
             }
 
-        BOOST_CONSTEXPR bool starts_with(basic_string_view x) const BOOST_NOEXCEPT {  // Boost extension
+        constexpr bool starts_with(basic_string_view x) const BOOST_NOEXCEPT {  // Boost extension
             return len_ >= x.len_ && traits::compare(ptr_, x.ptr_, x.len_) == 0;
             }
 
-        BOOST_CONSTEXPR bool ends_with(charT c) const BOOST_NOEXCEPT {                // Boost extension
+        constexpr bool ends_with(charT c) const BOOST_NOEXCEPT {                // Boost extension
             return !empty() && traits::eq(c, back());
             }
 
-        BOOST_CONSTEXPR bool ends_with(basic_string_view x) const BOOST_NOEXCEPT {    // Boost extension
+        constexpr bool ends_with(basic_string_view x) const BOOST_NOEXCEPT {    // Boost extension
             return len_ >= x.len_ &&
                traits::compare(ptr_ + len_ - x.len_, x.ptr_, x.len_) == 0;
             }
