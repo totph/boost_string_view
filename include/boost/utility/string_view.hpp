@@ -547,9 +547,7 @@ namespace boost {
     template<class charT, class traits>
     inline std::basic_ostream<charT, traits>&
     operator<<(std::basic_ostream<charT, traits>& os,
-      const basic_string_view<charT,traits>& str) {
-        return boost::ostream_string(os, str.data(), str.size());
-        }
+      const basic_string_view<charT,traits>& str) = delete;
 
 #if 0
     // numeric conversions
@@ -623,9 +621,7 @@ namespace boost {
 #endif
 
     template <class charT, class traits>
-    std::size_t hash_value(basic_string_view<charT, traits> s) {
-        return boost::hash_range(s.begin(), s.end());
-        }
+    std::size_t hash_value(basic_string_view<charT, traits> s) = delete;
 }
 
 #if 0
