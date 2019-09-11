@@ -113,7 +113,7 @@ namespace boost {
         constexpr const_reference operator[](size_type pos) const noexcept { return ptr_[pos]; }
 
         constexpr const_reference at(size_t pos) const {
-            return pos >= len_ ? BOOST_THROW_EXCEPTION(std::out_of_range("boost::string_view::at")), ptr_[0] : ptr_[pos];
+            return pos >= len_ ? throw(std::out_of_range("boost::string_view::at")), ptr_[0] : ptr_[pos];
             }
 
         constexpr const_reference front() const                { return ptr_[0]; }
@@ -154,7 +154,7 @@ namespace boost {
 
         size_type copy(charT* s, size_type n, size_type pos=0) const {
             if (pos > size())
-                BOOST_THROW_EXCEPTION(std::out_of_range("string_view::copy" ));
+                throw(std::out_of_range("string_view::copy" ));
             size_type rlen = (std::min)(n, len_ - pos);
             traits_type::copy(s, data() + pos, rlen);
             return rlen;
@@ -162,7 +162,7 @@ namespace boost {
 
         basic_string_view substr(size_type pos, size_type n=npos) const {
             if ( pos > size())
-                BOOST_THROW_EXCEPTION( std::out_of_range ( "string_view::substr" ) );
+                throw( std::out_of_range ( "string_view::substr" ) );
             return basic_string_view(data() + pos, (std::min)(size() - pos, n));
             }
 
