@@ -18,13 +18,6 @@
 #ifndef BOOST_STRING_VIEW_HPP
 #define BOOST_STRING_VIEW_HPP
 
-#include <boost/config.hpp>
-#include <boost/detail/workaround.hpp>
-#include <boost/utility/ostream_string.hpp>
-#include <boost/utility/string_view_fwd.hpp>
-#include <boost/throw_exception.hpp>
-#include <boost/container_hash/hash_fwd.hpp>
-
 #include <cstddef>
 #include <stdexcept>
 #include <algorithm>
