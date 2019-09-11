@@ -65,19 +65,19 @@ namespace boost {
       static constexpr size_type     npos = size_type(-1);
 
       // construct/copy
-      constexpr basic_string_view() BOOST_NOEXCEPT
+      constexpr basic_string_view() noexcept
         : ptr_(NULL), len_(0) {}
 
       // by defaulting these functions, basic_string_ref becomes
       //  trivially copy/move constructible.
-      constexpr basic_string_view(const basic_string_view &rhs) BOOST_NOEXCEPT
+      constexpr basic_string_view(const basic_string_view &rhs) noexcept
         = default;
 
-      basic_string_view& operator=(const basic_string_view &rhs) BOOST_NOEXCEPT
+      basic_string_view& operator=(const basic_string_view &rhs) noexcept
             = default;
 
       template<typename Allocator>
-        basic_string_view(const std::basic_string<charT, traits, Allocator>& str) BOOST_NOEXCEPT
+        basic_string_view(const std::basic_string<charT, traits, Allocator>& str) noexcept
           : ptr_(str.data()), len_(str.length()) {}
 
 // #if !defined(BOOST_NO_CXX11_RVALUE_REFERENCES) && !defined(BOOST_NO_CXX11_DELETED_FUNCTIONS)
@@ -94,23 +94,23 @@ namespace boost {
         : ptr_(str), len_(len) {}
 
         // iterators
-        constexpr const_iterator   begin() const BOOST_NOEXCEPT { return ptr_; }
-        constexpr const_iterator  cbegin() const BOOST_NOEXCEPT { return ptr_; }
-        constexpr const_iterator     end() const BOOST_NOEXCEPT { return ptr_ + len_; }
-        constexpr const_iterator    cend() const BOOST_NOEXCEPT { return ptr_ + len_; }
-                const_reverse_iterator  rbegin() const BOOST_NOEXCEPT { return const_reverse_iterator(end()); }
-                const_reverse_iterator crbegin() const BOOST_NOEXCEPT { return const_reverse_iterator(end()); }
-                const_reverse_iterator    rend() const BOOST_NOEXCEPT { return const_reverse_iterator(begin()); }
-                const_reverse_iterator   crend() const BOOST_NOEXCEPT { return const_reverse_iterator(begin()); }
+        constexpr const_iterator   begin() const noexcept { return ptr_; }
+        constexpr const_iterator  cbegin() const noexcept { return ptr_; }
+        constexpr const_iterator     end() const noexcept { return ptr_ + len_; }
+        constexpr const_iterator    cend() const noexcept { return ptr_ + len_; }
+                const_reverse_iterator  rbegin() const noexcept { return const_reverse_iterator(end()); }
+                const_reverse_iterator crbegin() const noexcept { return const_reverse_iterator(end()); }
+                const_reverse_iterator    rend() const noexcept { return const_reverse_iterator(begin()); }
+                const_reverse_iterator   crend() const noexcept { return const_reverse_iterator(begin()); }
 
         // capacity
-        constexpr size_type size()     const BOOST_NOEXCEPT { return len_; }
-        constexpr size_type length()   const BOOST_NOEXCEPT { return len_; }
-        constexpr size_type max_size() const BOOST_NOEXCEPT { return len_; }
-        constexpr bool empty()         const BOOST_NOEXCEPT { return len_ == 0; }
+        constexpr size_type size()     const noexcept { return len_; }
+        constexpr size_type length()   const noexcept { return len_; }
+        constexpr size_type max_size() const noexcept { return len_; }
+        constexpr bool empty()         const noexcept { return len_ == 0; }
 
         // element access
-        constexpr const_reference operator[](size_type pos) const BOOST_NOEXCEPT { return ptr_[pos]; }
+        constexpr const_reference operator[](size_type pos) const noexcept { return ptr_[pos]; }
 
         constexpr const_reference at(size_t pos) const {
             return pos >= len_ ? BOOST_THROW_EXCEPTION(std::out_of_range("boost::string_view::at")), ptr_[0] : ptr_[pos];
@@ -118,10 +118,10 @@ namespace boost {
 
         constexpr const_reference front() const                { return ptr_[0]; }
         constexpr const_reference back()  const                { return ptr_[len_-1]; }
-        constexpr const_pointer data()    const BOOST_NOEXCEPT { return ptr_; }
+        constexpr const_pointer data()    const noexcept { return ptr_; }
 
         // modifiers
-        void clear() BOOST_NOEXCEPT { len_ = 0; }          // Boost extension
+        void clear() noexcept { len_ = 0; }          // Boost extension
 
         void remove_prefix(size_type n) {
             if ( n > len_ )
@@ -136,7 +136,7 @@ namespace boost {
             len_ -= n;
             }
 
-        void swap(basic_string_view& s) BOOST_NOEXCEPT {
+        void swap(basic_string_view& s) noexcept {
             std::swap(ptr_, s.ptr_);
             std::swap(len_, s.len_);
             }
@@ -166,13 +166,13 @@ namespace boost {
             return basic_string_view(data() + pos, (std::min)(size() - pos, n));
             }
 
-        int compare(basic_string_view x) const BOOST_NOEXCEPT {
+        int compare(basic_string_view x) const noexcept {
             const int cmp = traits::compare(ptr_, x.ptr_, (std::min)(len_, x.len_));
             return cmp != 0 ? cmp : (len_ == x.len_ ? 0 : len_ < x.len_ ? -1 : 1);
             }
 
         int compare(size_type pos1, size_type n1, basic_string_view x)
-          const BOOST_NOEXCEPT {
+          const noexcept {
             return substr(pos1, n1).compare(x);
             }
 
@@ -195,25 +195,25 @@ namespace boost {
             }
 
         //  Searches
-        constexpr bool starts_with(charT c) const BOOST_NOEXCEPT {              // Boost extension
+        constexpr bool starts_with(charT c) const noexcept {              // Boost extension
             return !empty() && traits::eq(c, front());
             }
 
-        constexpr bool starts_with(basic_string_view x) const BOOST_NOEXCEPT {  // Boost extension
+        constexpr bool starts_with(basic_string_view x) const noexcept {  // Boost extension
             return len_ >= x.len_ && traits::compare(ptr_, x.ptr_, x.len_) == 0;
             }
 
-        constexpr bool ends_with(charT c) const BOOST_NOEXCEPT {                // Boost extension
+        constexpr bool ends_with(charT c) const noexcept {                // Boost extension
             return !empty() && traits::eq(c, back());
             }
 
-        constexpr bool ends_with(basic_string_view x) const BOOST_NOEXCEPT {    // Boost extension
+        constexpr bool ends_with(basic_string_view x) const noexcept {    // Boost extension
             return len_ >= x.len_ &&
                traits::compare(ptr_ + len_ - x.len_, x.ptr_, x.len_) == 0;
             }
 
         //  find
-        size_type find(basic_string_view s, size_type pos = 0) const BOOST_NOEXCEPT {
+        size_type find(basic_string_view s, size_type pos = 0) const noexcept {
             if (pos > size())
               return npos;
             if (s.empty())
@@ -231,7 +231,7 @@ namespace boost {
             }
             return npos;
             }
-        size_type find(charT c, size_type pos = 0) const BOOST_NOEXCEPT {
+        size_type find(charT c, size_type pos = 0) const noexcept {
             if (pos > size())
               return npos;
             const charT* ret_ptr = traits::find(ptr_ + pos, len_ - pos, c);
@@ -239,13 +239,13 @@ namespace boost {
               return ret_ptr - ptr_;
             return npos;
             }
-        size_type find(const charT* s, size_type pos, size_type n) const BOOST_NOEXCEPT
+        size_type find(const charT* s, size_type pos, size_type n) const noexcept
             { return find(basic_string_view(s, n), pos); }
-        size_type find(const charT* s, size_type pos = 0) const BOOST_NOEXCEPT
+        size_type find(const charT* s, size_type pos = 0) const noexcept
             { return find(basic_string_view(s), pos); }
 
         //  rfind
-        size_type rfind(basic_string_view s, size_type pos = npos) const BOOST_NOEXCEPT {
+        size_type rfind(basic_string_view s, size_type pos = npos) const noexcept {
             if (len_ < s.len_)
               return npos;
             if (pos > len_ - s.len_)
@@ -259,30 +259,30 @@ namespace boost {
                   return npos;
                 };
             }
-        size_type rfind(charT c, size_type pos = npos) const BOOST_NOEXCEPT
+        size_type rfind(charT c, size_type pos = npos) const noexcept
             { return rfind(basic_string_view(&c, 1), pos); }
-        size_type rfind(const charT* s, size_type pos, size_type n) const BOOST_NOEXCEPT
+        size_type rfind(const charT* s, size_type pos, size_type n) const noexcept
             { return rfind(basic_string_view(s, n), pos); }
-        size_type rfind(const charT* s, size_type pos = npos) const BOOST_NOEXCEPT
+        size_type rfind(const charT* s, size_type pos = npos) const noexcept
             { return rfind(basic_string_view(s), pos); }
 
         //  find_first_of
-        size_type find_first_of(basic_string_view s, size_type pos = 0) const BOOST_NOEXCEPT {
+        size_type find_first_of(basic_string_view s, size_type pos = 0) const noexcept {
             if (pos >= len_ || s.len_ == 0)
               return npos;
             const_iterator iter = std::find_first_of
                 (this->cbegin () + pos, this->cend (), s.cbegin (), s.cend (), traits::eq);
             return iter == this->cend () ? npos : std::distance ( this->cbegin (), iter );
             }
-        size_type find_first_of(charT c, size_type pos = 0) const BOOST_NOEXCEPT
+        size_type find_first_of(charT c, size_type pos = 0) const noexcept
             { return find(c, pos); }
-        size_type find_first_of(const charT* s, size_type pos, size_type n) const BOOST_NOEXCEPT
+        size_type find_first_of(const charT* s, size_type pos, size_type n) const noexcept
             { return find_first_of(basic_string_view(s, n), pos); }
-        size_type find_first_of(const charT* s, size_type pos = 0) const BOOST_NOEXCEPT
+        size_type find_first_of(const charT* s, size_type pos = 0) const noexcept
             { return find_first_of(basic_string_view(s), pos); }
 
         //  find_last_of
-        size_type find_last_of(basic_string_view s, size_type pos = npos) const BOOST_NOEXCEPT {
+        size_type find_last_of(basic_string_view s, size_type pos = npos) const noexcept {
             if (s.len_ == 0u)
               return npos;
             if (pos >= len_)
@@ -293,15 +293,15 @@ namespace boost {
                 ( this->crbegin () + pos, this->crend (), s.cbegin (), s.cend (), traits::eq );
             return iter == this->crend () ? npos : reverse_distance ( this->crbegin (), iter);
             }
-        size_type find_last_of(charT c, size_type pos = npos) const BOOST_NOEXCEPT
+        size_type find_last_of(charT c, size_type pos = npos) const noexcept
             { return find_last_of(basic_string_view(&c, 1), pos); }
-        size_type find_last_of(const charT* s, size_type pos, size_type n) const BOOST_NOEXCEPT
+        size_type find_last_of(const charT* s, size_type pos, size_type n) const noexcept
             { return find_last_of(basic_string_view(s, n), pos); }
-        size_type find_last_of(const charT* s, size_type pos = npos) const BOOST_NOEXCEPT
+        size_type find_last_of(const charT* s, size_type pos = npos) const noexcept
             { return find_last_of(basic_string_view(s), pos); }
 
         //  find_first_not_of
-        size_type find_first_not_of(basic_string_view s, size_type pos = 0) const BOOST_NOEXCEPT {
+        size_type find_first_not_of(basic_string_view s, size_type pos = 0) const noexcept {
             if (pos >= len_)
               return npos;
             if (s.len_ == 0)
@@ -309,15 +309,15 @@ namespace boost {
             const_iterator iter = find_not_of ( this->cbegin () + pos, this->cend (), s );
             return iter == this->cend () ? npos : std::distance ( this->cbegin (), iter );
             }
-        size_type find_first_not_of(charT c, size_type pos = 0) const BOOST_NOEXCEPT
+        size_type find_first_not_of(charT c, size_type pos = 0) const noexcept
             { return find_first_not_of(basic_string_view(&c, 1), pos); }
-        size_type find_first_not_of(const charT* s, size_type pos, size_type n) const BOOST_NOEXCEPT
+        size_type find_first_not_of(const charT* s, size_type pos, size_type n) const noexcept
             { return find_first_not_of(basic_string_view(s, n), pos); }
-        size_type find_first_not_of(const charT* s, size_type pos = 0) const BOOST_NOEXCEPT
+        size_type find_first_not_of(const charT* s, size_type pos = 0) const noexcept
             { return find_first_not_of(basic_string_view(s), pos); }
 
         //  find_last_not_of
-        size_type find_last_not_of(basic_string_view s, size_type pos = npos) const BOOST_NOEXCEPT {
+        size_type find_last_not_of(basic_string_view s, size_type pos = npos) const noexcept {
             if (pos >= len_)
               pos = len_ - 1;
             if (s.len_ == 0u)
@@ -326,22 +326,22 @@ namespace boost {
             const_reverse_iterator iter = find_not_of ( this->crbegin () + pos, this->crend (), s );
             return iter == this->crend () ? npos : reverse_distance ( this->crbegin (), iter );
             }
-        size_type find_last_not_of(charT c, size_type pos = npos) const BOOST_NOEXCEPT
+        size_type find_last_not_of(charT c, size_type pos = npos) const noexcept
             { return find_last_not_of(basic_string_view(&c, 1), pos); }
-        size_type find_last_not_of(const charT* s, size_type pos, size_type n) const BOOST_NOEXCEPT
+        size_type find_last_not_of(const charT* s, size_type pos, size_type n) const noexcept
             { return find_last_not_of(basic_string_view(s, n), pos); }
-        size_type find_last_not_of(const charT* s, size_type pos = npos) const BOOST_NOEXCEPT
+        size_type find_last_not_of(const charT* s, size_type pos = npos) const noexcept
             { return find_last_not_of(basic_string_view(s), pos); }
 
     private:
         template <typename r_iter>
-        size_type reverse_distance(r_iter first, r_iter last) const BOOST_NOEXCEPT {
+        size_type reverse_distance(r_iter first, r_iter last) const noexcept {
         // Portability note here: std::distance is not NOEXCEPT, but calling it with a string_view::reverse_iterator will not throw.
             return len_ - 1 - std::distance ( first, last );
             }
 
         template <typename Iterator>
-        Iterator find_not_of(Iterator first, Iterator last, basic_string_view s) const BOOST_NOEXCEPT {
+        Iterator find_not_of(Iterator first, Iterator last, basic_string_view s) const noexcept {
             for (; first != last ; ++first)
                 if ( 0 == traits::find(s.ptr_, s.len_, *first))
                     return first;
@@ -357,7 +357,7 @@ namespace boost {
 //  Equality
     template<typename charT, typename traits>
     inline bool operator==(basic_string_view<charT, traits> x,
-                           basic_string_view<charT, traits> y) BOOST_NOEXCEPT {
+                           basic_string_view<charT, traits> y) noexcept {
         if (x.size () != y.size ()) return false;
         return x.compare(y) == 0;
         }
@@ -365,7 +365,7 @@ namespace boost {
 //  Inequality
     template<typename charT, typename traits>
     inline bool operator!=(basic_string_view<charT, traits> x,
-                           basic_string_view<charT, traits> y) BOOST_NOEXCEPT {
+                           basic_string_view<charT, traits> y) noexcept {
         if ( x.size () != y.size ()) return true;
         return x.compare(y) != 0;
         }
@@ -373,173 +373,173 @@ namespace boost {
 //  Less than
     template<typename charT, typename traits>
     inline bool operator<(basic_string_view<charT, traits> x,
-                          basic_string_view<charT, traits> y) BOOST_NOEXCEPT {
+                          basic_string_view<charT, traits> y) noexcept {
         return x.compare(y) < 0;
         }
 
 //  Greater than
     template<typename charT, typename traits>
     inline bool operator>(basic_string_view<charT, traits> x,
-                          basic_string_view<charT, traits> y) BOOST_NOEXCEPT {
+                          basic_string_view<charT, traits> y) noexcept {
         return x.compare(y) > 0;
         }
 
 //  Less than or equal to
     template<typename charT, typename traits>
     inline bool operator<=(basic_string_view<charT, traits> x,
-                           basic_string_view<charT, traits> y) BOOST_NOEXCEPT {
+                           basic_string_view<charT, traits> y) noexcept {
         return x.compare(y) <= 0;
         }
 
 //  Greater than or equal to
     template<typename charT, typename traits>
     inline bool operator>=(basic_string_view<charT, traits> x,
-                           basic_string_view<charT, traits> y) BOOST_NOEXCEPT {
+                           basic_string_view<charT, traits> y) noexcept {
         return x.compare(y) >= 0;
         }
 
 // "sufficient additional overloads of comparison functions"
     template<typename charT, typename traits, typename Allocator>
     inline bool operator==(basic_string_view<charT, traits> x,
-                     const std::basic_string<charT, traits, Allocator> & y) BOOST_NOEXCEPT {
+                     const std::basic_string<charT, traits, Allocator> & y) noexcept {
         return x == basic_string_view<charT, traits>(y);
         }
 
     template<typename charT, typename traits, typename Allocator>
     inline bool operator==(const std::basic_string<charT, traits, Allocator> & x,
-                                 basic_string_view<charT, traits> y) BOOST_NOEXCEPT {
+                                 basic_string_view<charT, traits> y) noexcept {
         return basic_string_view<charT, traits>(x) == y;
         }
 
     template<typename charT, typename traits>
     inline bool operator==(basic_string_view<charT, traits> x,
-                                              const charT * y) BOOST_NOEXCEPT {
+                                              const charT * y) noexcept {
         return x == basic_string_view<charT, traits>(y);
         }
 
     template<typename charT, typename traits>
     inline bool operator==(const charT * x,
-                           basic_string_view<charT, traits> y) BOOST_NOEXCEPT {
+                           basic_string_view<charT, traits> y) noexcept {
         return basic_string_view<charT, traits>(x) == y;
         }
 
     template<typename charT, typename traits, typename Allocator>
     inline bool operator!=(basic_string_view<charT, traits> x,
-                     const std::basic_string<charT, traits, Allocator> & y) BOOST_NOEXCEPT {
+                     const std::basic_string<charT, traits, Allocator> & y) noexcept {
         return x != basic_string_view<charT, traits>(y);
         }
 
     template<typename charT, typename traits, typename Allocator>
     inline bool operator!=(const std::basic_string<charT, traits, Allocator> & x,
-                                 basic_string_view<charT, traits> y) BOOST_NOEXCEPT {
+                                 basic_string_view<charT, traits> y) noexcept {
         return basic_string_view<charT, traits>(x) != y;
         }
 
     template<typename charT, typename traits>
     inline bool operator!=(basic_string_view<charT, traits> x,
-                           const charT * y) BOOST_NOEXCEPT {
+                           const charT * y) noexcept {
         return x != basic_string_view<charT, traits>(y);
         }
 
     template<typename charT, typename traits>
     inline bool operator!=(const charT * x,
-                           basic_string_view<charT, traits> y) BOOST_NOEXCEPT {
+                           basic_string_view<charT, traits> y) noexcept {
         return basic_string_view<charT, traits>(x) != y;
         }
 
     template<typename charT, typename traits, typename Allocator>
     inline bool operator<(basic_string_view<charT, traits> x,
-                    const std::basic_string<charT, traits, Allocator> & y) BOOST_NOEXCEPT {
+                    const std::basic_string<charT, traits, Allocator> & y) noexcept {
         return x < basic_string_view<charT, traits>(y);
         }
 
     template<typename charT, typename traits, typename Allocator>
     inline bool operator<(const std::basic_string<charT, traits, Allocator> & x,
-                                basic_string_view<charT, traits> y) BOOST_NOEXCEPT {
+                                basic_string_view<charT, traits> y) noexcept {
         return basic_string_view<charT, traits>(x) < y;
         }
 
     template<typename charT, typename traits>
     inline bool operator<(basic_string_view<charT, traits> x,
-                          const charT * y) BOOST_NOEXCEPT {
+                          const charT * y) noexcept {
         return x < basic_string_view<charT, traits>(y);
         }
 
     template<typename charT, typename traits>
     inline bool operator<(const charT * x,
-                          basic_string_view<charT, traits> y) BOOST_NOEXCEPT {
+                          basic_string_view<charT, traits> y) noexcept {
         return basic_string_view<charT, traits>(x) < y;
         }
 
     template<typename charT, typename traits, typename Allocator>
     inline bool operator>(basic_string_view<charT, traits> x,
-                    const std::basic_string<charT, traits, Allocator> & y) BOOST_NOEXCEPT {
+                    const std::basic_string<charT, traits, Allocator> & y) noexcept {
         return x > basic_string_view<charT, traits>(y);
         }
 
     template<typename charT, typename traits, typename Allocator>
     inline bool operator>(const std::basic_string<charT, traits, Allocator> & x,
-                                basic_string_view<charT, traits> y) BOOST_NOEXCEPT {
+                                basic_string_view<charT, traits> y) noexcept {
         return basic_string_view<charT, traits>(x) > y;
         }
 
     template<typename charT, typename traits>
     inline bool operator>(basic_string_view<charT, traits> x,
-                          const charT * y) BOOST_NOEXCEPT {
+                          const charT * y) noexcept {
         return x > basic_string_view<charT, traits>(y);
         }
 
     template<typename charT, typename traits>
     inline bool operator>(const charT * x,
-                          basic_string_view<charT, traits> y) BOOST_NOEXCEPT {
+                          basic_string_view<charT, traits> y) noexcept {
         return basic_string_view<charT, traits>(x) > y;
         }
 
     template<typename charT, typename traits, typename Allocator>
     inline bool operator<=(basic_string_view<charT, traits> x,
-                     const std::basic_string<charT, traits, Allocator> & y) BOOST_NOEXCEPT {
+                     const std::basic_string<charT, traits, Allocator> & y) noexcept {
         return x <= basic_string_view<charT, traits>(y);
         }
 
     template<typename charT, typename traits, typename Allocator>
     inline bool operator<=(const std::basic_string<charT, traits, Allocator> & x,
-                                 basic_string_view<charT, traits> y) BOOST_NOEXCEPT {
+                                 basic_string_view<charT, traits> y) noexcept {
         return basic_string_view<charT, traits>(x) <= y;
         }
 
     template<typename charT, typename traits>
     inline bool operator<=(basic_string_view<charT, traits> x,
-                           const charT * y) BOOST_NOEXCEPT {
+                           const charT * y) noexcept {
         return x <= basic_string_view<charT, traits>(y);
         }
 
     template<typename charT, typename traits>
     inline bool operator<=(const charT * x,
-                           basic_string_view<charT, traits> y) BOOST_NOEXCEPT {
+                           basic_string_view<charT, traits> y) noexcept {
         return basic_string_view<charT, traits>(x) <= y;
         }
 
     template<typename charT, typename traits, typename Allocator>
     inline bool operator>=(basic_string_view<charT, traits> x,
-                     const std::basic_string<charT, traits, Allocator> & y) BOOST_NOEXCEPT {
+                     const std::basic_string<charT, traits, Allocator> & y) noexcept {
         return x >= basic_string_view<charT, traits>(y);
         }
 
     template<typename charT, typename traits, typename Allocator>
     inline bool operator>=(const std::basic_string<charT, traits, Allocator> & x,
-                                 basic_string_view<charT, traits> y) BOOST_NOEXCEPT {
+                                 basic_string_view<charT, traits> y) noexcept {
         return basic_string_view<charT, traits>(x) >= y;
         }
 
     template<typename charT, typename traits>
     inline bool operator>=(basic_string_view<charT, traits> x,
-                           const charT * y) BOOST_NOEXCEPT {
+                           const charT * y) noexcept {
         return x >= basic_string_view<charT, traits>(y);
         }
 
     template<typename charT, typename traits>
     inline bool operator>=(const charT * x,
-                           basic_string_view<charT, traits> y) BOOST_NOEXCEPT {
+                           basic_string_view<charT, traits> y) noexcept {
         return basic_string_view<charT, traits>(x) >= y;
         }
 
